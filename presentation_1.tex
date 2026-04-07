@@ -1,0 +1,538 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{ytableau}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\newcommand{\youngone}[1]{\begin{tikzpicture}[scale=0.4]
+\foreach \i in {1,...,#1} \draw (\i-1,0) rectangle (\i,1);
+\end{tikzpicture}}
+\newcommand{\youngtwo}[2]{\begin{tikzpicture}[scale=0.4]
+\foreach \i in {1,...,#1} \draw (\i-1,0) rectangle (\i,1);
+\foreach \i in {1,...,#2} \draw (\i-1,-1) rectangle (\i,0);
+\end{tikzpicture}}
+\newcommand{\youngthree}[3]{\begin{tikzpicture}[scale=0.4]
+\foreach \i in {1,...,#1} \draw (\i-1,0) rectangle (\i,1);
+\foreach \i in {1,...,#2} \draw (\i-1,-1) rectangle (\i,0);
+\foreach \i in {1,...,#3} \draw (\i-1,-2) rectangle (\i,-1);
+\end{tikzpicture}}
+
+\setlength{\unitlength}{1mm}
+
+% 定义一个带箭头的“从 A 指向 B”的小宏
+% 语法：\link(x1,y1)(x2,y2)
+\newcommand{\link}[4]{\begin{picture}(0,0)
+  \put(#1,#2){\vector(#3,#4){10}} % 10 是长度，可自行调
+\end{picture}}
+\renewcommand{\arraystretch}{1.5}
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Short title]{Convergence of the DFP Algorithm} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Javen Huang} % Your name
+\institute[sysu] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+Sun Yat-sen University \\ % Your institution for the title page
+\medskip
+\textit{huangjw267@mail2.sysu.edu.cn} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+\begin{frame}
+\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{The DFP Algorithm} 
+%------------------------------------------------
+\subsection{The DFP Algorithm}
+\begin{frame}
+\frametitle{The DFP Algorithm}
+    The DFP Algorithm is the first quasi-Newton method for unconstrained optimization \[\min _{x \in \mathbb{R}^{n}} f(x) . \tag{1.1}\]
+    The algorithm is as follows.
+\end{frame}
+
+\begin{frame}
+\frametitle{The DFP Algorithm}
+Step 0. Given $x_1 \in \mathbb{R}^n ; B_1 \in \mathbb{R}^{n \times n}$ positive definite;$k:=1.$\\
+Step 1. Compute $g_k=\nabla f\left(x_k\right)$;\\
+if $g_k=0$ then stop;\\
+set $d_k=-B_k^{-1} g_k$;\\
+Step 2. Carry out a line search along $d_k$, getting $\alpha_k>0$;\\
+set $x_{k+1}=x_k+\alpha_k d_k$;\\
+Step 3. Set\begin{equation*}
+    B_{k+1}=B_k-\frac{B_k s_k y_k^T+y_k s_k^T B_k}{s_k^T y_k}+\left(1+\frac{s_k^T B_k s_k}{s_k^T y_k}\right) \frac{y_k y_k^T}{s_k^T y_k}, \tag{1.2}
+\end{equation*}
+where\begin{align*}
+    s_k=\alpha_k d_k \tag{1.3}\\
+    y_k=g_{k+1}-g_k  \tag{1.4}
+\end{align*}
+Step 4.k:=k+1 \text {; go to Step } 1.
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{The DFP Algorithm}
+    If we replace(1.2)with\begin{equation*}
+B_{k+1}=B_{k}-\frac{B_{k} s_{k} s_{k}^{T} B_{k}}{s_{k}^{T} B_{k} s_{k}}+\frac{y_{k} y_{k}^{T}}{s_{k}^{T} y_{k}}
+\end{equation*}
+    then we get the BFGS algorithm.
+    
+\end{frame}
+
+
+
+%------------------------------------------------
+\section{The Wolfe Line Search}
+%------------------------------------------------
+\subsection{The Wolfe Line Search}
+
+\begin{frame}{The Wolfe Line Search}
+The line search in Step 2 requires step lengths $d_k$ to satisfy certain line search conditions.\\
+If exact line search is used, $\alpha_k$ satisfies\begin{equation*}
+    f\left(x_k+\alpha_k d_k\right)=\min f\left(x_k+\alpha d_k\right) .\tag{2.1}
+\end{equation*}
+
+For inexact line search, the Wolfe conditions usually serves as an alternative for.\\
+
+The Wolfe Line Search consists of two conditions, the Armijo Condition that ensures sufficient decrease and the Curvature Condition ensures the steps size to be "good" enough.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Armijo Condition}
+The Armijo condition is a sufficient decrease condition that ensures that the step size chosen in the line search leads to a sufficient decrease in the objective function.
+The formula for the Armijo condition is given by:
+\[f(x_k + \alpha d_k) \leq f(x_k) + c_1 \alpha \nabla f(x_k)^T d_k,\tag{2.2} \]
+where $f$ is the objective function, $x_k$ is the current point, $d_k$ is the search direction, $\alpha$ is the step size, and $c_1$ is a constant in the range $(0, 1)$.  The Armijo condition ensures that the step size chosen in the line search leads to a sufficient decrease in the objective function, which is important for the convergence of optimization algorithms.   
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Curvature Condition}
+The curvature condition is a condition that ensures that the step size chosen in the line search is not too small. 
+It is given by the formula:
+\[\nabla f(x_k + \alpha d_k)^T d_k \geq c_2 \nabla f(x_k)^T d_k,\tag{2.3} \]
+where $c_2$ is a constant in the range $(c_1, 1)$. The curvature condition ensures that the step size chosen in the line search is not too small, which can lead to slow convergence or even divergence of optimization algorithms.
+
+
+\end{frame}
+
+
+
+%------------------------------------------------
+
+
+
+\section{Advancements}
+
+\begin{frame}
+    \frametitle{Advancements}
+    \begin{itemize}
+    \item Powell\cite{Po1} showed that if $f(x)$ is a convex function and if line searches are exact in all iterations, then the DFP algorithm will either stop at a global minimum or generate a sequence of iterates that converges to a global minimum. 
+    \item For inexact line search, Powell\cite{Po2} showed that the BFGS method is globally convergent. 
+    \item Byrd, Nocedal and Yuan\cite{BNY} showed the global convergence of all the methods in the convex Broden family except the DFP method.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Advancements}
+\begin{itemize}
+    \item In the 1990s, Yuan\cite{Yuan}(improved by Yin and Han\cite{YH} three years later), Xu and Liu\cite{XL} gave sufficient conditions for the global convergence of the DFP method with objective function being uniformly convex respectively.
+    \item In 2002, Liu, Han and Xu\cite{LHX} proved that convergence of DFP algorithm with Wolfe line search holds for quadratic uniformly convex functions.
+    \item In 2024, Luo, Wu and He\cite{LWH} derived a new DFP correction formula and proposed a new class of DFP algorithm under the strong Wolfe condition, improving the problem of linesearch failure due to accuracy and proving global convergence of the improved algorithm under certain assumptions.
+\end{itemize}
+\end{frame}
+
+
+
+\section{Some sufficient conditions for the global convergence of the DFP algortihm}
+
+\begin{frame}
+    \frametitle{Some sufficient conditions for the global convergence of the DFP algortihm}
+    In this section, we will talk about some sufficient conditions for the global convergence of the DFP Algorithm given by Yuan\cite{Yuan}, Xu and Liu\cite{XL}, Yin and Han\cite{YH}.\\
+    All these works were established under the following hypothesis (H):
+    \begin{enumerate}
+        \item f(x) is twice continuously differentiable and uniformly convex. Namely, there exists a constant $c_{3} \geq 0$ such that
+    \begin{equation*}
+        d^{T} \nabla^{2} f(x) d \geqslant c_{3}\|d\|_{2}^{2}, \quad \forall d, x \in \mathbb{R}^{n} . \tag{3.1}
+    \end{equation*}\\
+    \item The Wolfe Conditions are satisfied in all iterations.
+    \end{enumerate}
+\end{frame}
+
+
+\subsection{Yuan's work in the 1990s}
+
+\begin{frame}
+    \frametitle{Yuan's work in the 1990}
+        Using the well-known Trace Relation\begin{equation}
+            \operatorname{tr}\left(B_{k+1}\right)=\operatorname{tr}\left(B_{k}\right)-2 \frac{s_{k}^{T} B_{k} y_{k}}{s_{k}^{T} y_{k}}+\left(1+\frac{s_{k}^{T} B_{k} s_{k}}{s_{k}^{T} y_{k}}\right) \frac{\left\|y_{k}\right\|_{2}^{2}}{s_{k}^{T} y_{k}},  \tag{3.2}
+        \end{equation}
+        Yuan obtained the following result:
+        \begin{theorem}[Yuan,2.1]
+            If $\left\{\alpha_{k}\right\}$ are bounded away from zero, and if $\operatorname{Tr}\left(B_{k}\right)$ are monotonically increasing, the DFP method converges to the unique solution.
+        \end{theorem}
+    
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Yuan's work in the 1990}
+    Subsequently, Yuan got the following:
+    \begin{theorem}[Yuan,2.2]
+       Assume that the hypothesis (H) holds. If the sequence $x_{k}$ generated by the DFP algorithm satisfies
+\begin{equation*}
+\left\|g_{k+1}\right\|_{2} \leqslant\left\|g_{k}\right\|_{2} \tag{2.21}
+\end{equation*}
+for all large $k$, then $x_{k}$ converges to the unique minimum of $f(x)$.
+    \end{theorem}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Yuan's work in the 1990}
+    In addition, we have
+        \begin{theorem}[Yuan,2.3]
+    If
+\begin{equation*}
+\sum_{k=1}^{x}| | s_{k}| |<\infty . \tag{2.43}
+\end{equation*}
+then the DFP algorithm converges to the solution.
+    \end{theorem}
+    \begin{theorem}[Yuan,2.4]
+        Assume that the conditions in Hypothesis (H) hold. Let the sequence $\{x_{k}, k=1,2, \cdots\}$ be generated by the DFP method. If
+\begin{equation*}
+y_{k}^{T} B_{k} g_{k} \leqslant 0 \tag{2.47}
+\end{equation*}
+for all $k$, then $\left\{x_{k}\right\}$ either terminates at the unique minimum $x^{*}$ of $f(x)$ or converges to $x^{*}$.
+    \end{theorem}
+\end{frame}
+
+
+
+\subsection{Xu and Liu's work}
+
+\begin{frame}
+\frametitle{Xu and Liu's work}
+In this essay, Xu and Liu established the following sufficient conditions for the global convergence of the DFP Algorithm.
+\begin{theorem}[Xu and Liu,2.3]
+    Assume the conditions in Hypothesis (H) hold. If \begin{equation*}
+        y_k^{\mathrm{T}} B_k^2 g_k \leq 0 \tag{2.10}
+    \end{equation*}
+holds for all large $k$, then the sequence $\left\{x_k, k=1,2, \cdots\right\}$ generated by the DFP method either terminates at the unique minimum $x^*$ of $f(x)$ or converges to $x^*$.
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\frametitle{Xu and Liu's work}
+\begin{theorem}[Xu and Liu,2.4]
+The condition (2.10) in Theorem (Xu and Liu,2.3)can be replaced by \begin{equation*}
+    \sum_{i \in I_k}\left(y_i^{\mathrm{T}} B_i^2 g_i\right)^2 \leq C_2 \sum_{i=1}^k \frac{1}{\left\|d_i\right\|_2^3},
+\end{equation*}
+where $I_k=\left\{i: y_i^{\mathbf{T}} B_i^2 g_i>0, i<k\right\}, C_2>0$.
+\end{theorem}
+
+\end{frame}
+
+
+
+\subsection{Yin and Han's Improvement}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement}
+In this essay, Yin and Han established the following theorem:
+\begin{theorem}[Yin and Han,2.3]
+Assume that the conditions in Hypothesis (H) hold. Let the sequence $\{x_{k}, k=1,2, \cdots\}$ be generated by the DFP method. If
+\begin{equation*}
+    \operatorname{tr}\left(B_k\right) \leq c_6 \sqrt{\sum_{i=1}^k \frac{1}{\left\|d_i\right\|^2}}, \quad \forall k \geq 1, \tag{2.14}
+\end{equation*}
+where $c_6>0$ constant,then $\left\{x_k\right\}$ terminates at the unique minimum $x^{*}$ of $f(x)$ or converges to $x^{*}$.
+\end{theorem}
+    
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement}
+Then we get the following theorem:
+\begin{theorem}[Yin and Han,2.4]
+    Under the hypothesis in theorem (Yin and Han,2.3), if there exists a constant $c_7>0$ such that \begin{equation*}
+        \operatorname{Tr}\left(B_k\right) \leq c_7 k, \quad \forall k \geq 1,
+    \end{equation*}
+then $\left\{x_k\right\}$ terminates at the unique minimum $x^{*}$ of $f(x)$ or converges to $x^{*}$.
+\end{theorem}
+    From the theorems above, we can get some sufficient conditions for the global convergence of the DFP Algorithm.
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement}
+\begin{theorem}[Yin and Han,3.1]
+Assume that the conditions in Hypothesis (H) hold. Let the sequence $\{x_{k}, k=1,2, \cdots\}$ be generated by the DFP method. If\begin{equation*}
+    \sum_{i \in I_k} \frac{g_i^T y_i}{d_i^T y_i} \leq c \sqrt{\sum_{i=1}^k \frac{1}{\left\|d_i\right\|^2}}, \quad \forall k \geq 1,
+\end{equation*}
+where $c>0$ constant,$I_k=\left\{i \mid 1 \leq i \leq k, g_i^T y_i>0\right\}$,then $\left\{x_k\right\}$ terminates at the unique minimum $x^{*}$ of $f(x)$ or converges to $x^{*}$.
+    
+\end{theorem}
+    
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement}
+    \begin{theorem}[Yin and Han,3.2]
+Assume that the conditions in Hypothesis (H) hold. Let the sequence $\{x_{k}, k=1,2, \cdots\}$ be generated by the DFP method. If \begin{equation*}
+    g_k^T y_k \leq 0, \quad \forall k \geq 1,
+\end{equation*}
+then $\left\{x_k\right\}$ terminates at the unique minimum $x^{*}$ of $f(x)$ or converges to $x^{*}$.
+\end{theorem}
+
+Note that 
+\begin{align*}
+g_k^T y_k & =g_k^T\left(g_{k+1}-g_k\right)=g_k^T g_{k+1}-\left\|g_k\right\|^2 \leq \frac{1}{2}\left(\left\|g_k\right\|^2+\|g_{k+1} \|^2\right)-\left\|g_k\right\|^2 \\
+& =\frac{1}{2}\left(\left\|g_{k+1}\right\|^2-\left\|g_k\right\|^2\right) \leq 0, \quad \forall k \geq 1
+\end{align*}
+then from theorem (Yin and Han,3.2),we obtain theorem (Yuan,2.2), indicating that the conditions in theorem (Yuan,2.2) are stronger than those in theorem(Yin and Han,3.1).
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement} 
+\begin{theorem}[Yin and Han,3.4]
+Assume that the conditions in Hypothesis (H) hold. Let the sequence $\{x_{k}, k=1,2, \cdots\}$ be generated by the DFP method. If \begin{equation*}
+    \sum_{k \in J} g_k^T y_k<+\infty, \tag{3.10}
+\end{equation*}
+where $J=\left\{k \mid g_k^T y_k>0, k=1,2, \cdots\right\}$,then $\left\{x_k\right\}$ terminates at the unique minimum $x^{*}$ of $f(x)$.
+\end{theorem}
+If we replace (3.10) with
+\begin{align*}
+    \sum_{k=1}^{\infty}\left|g_k^T y_k\right|<+\infty, \tag{3.12}
+\end{align*}
+theorem (Yin and Han,3.4) also holds.
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement} 
+Note that
+\begin{align*}
+    \left|g_k^T y_k\right| \leq\left\|g_k\right\|\left\|y_k\right\| \leq \eta\left\|y_k\right\| \leq \eta c_4\left\|s_k\right\|,
+\end{align*}
+then from theorem (Yin and Han,3.4),we obtain theorem (Yuan,2.3), indicating that the conditions in theorem (Yuan,2.3) are stronger than  (3.12).\\
+Additionally, we can also obtain (Yuan,2.1) by (Yin and Han,3.4).
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement} 
+\begin{theorem}
+    Assume that the conditions in Hypothesis (H) hold. If there exists a constant $b>0$ such that \begin{equation*}
+    \left\|g_k\right\| \leq b\left\|d_k\right\|, \quad \forall k \geq 1,
+\end{equation*}
+then $\left\{x_k\right\}$ terminates after finite steps or converges to the unique minimum $x^{*}$ of $f(x)$.
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\frametitle{Yin and Han's Improvement} 
+Under the hypothesis (H), Yuan\cite{Yuan} gave an sufficient condition
+\begin{align*}
+    y_k^T B_k g_k \leq 0, \quad \forall k \geq 1.
+\end{align*}
+Xu and Liu\cite{XL} suggested that
+\begin{align*}
+    y_k^T B_k^2 g_k \leq 0, \quad \forall k \geq 1.
+\end{align*}
+Yin and Han\cite{YH} showed that
+\begin{align*}
+    y_k^T B_k^0 g_k \leq 0, \quad \forall k \geq 1.
+\end{align*}
+One may propose that if there exists an integer $m\geq0$ such that
+\begin{align*}
+    y_k^T B_k^m g_k \leq 0, \quad \forall k \geq 1
+\end{align*}
+then $\left\{x_k\right\}$ terminates after finite steps or converges to the unique minimum $x^{*}$ of $f(x)$. However, whether this proposition holds is still unknown.
+\end{frame}
+
+
+
+\section{Summary}
+\subsection{}
+
+\begin{frame}
+In this talk, we discover the origin and recent progress in the global convergence of the DFP algorithm.\\
+Then we review some essays giving sufficient conditions of convergence under some hypotheis.((i)the functions are twice continuously differentiable and uniformly convex (ii) Wolfe conditions are satisfied in all iterations)\\
+Finally, we make some comparisons of the results, and point out an open problem to be solved.
+
+\end{frame}
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{References}
+\footnotesize{
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[1]{Da} W. C. Davidon. 
+\newblock Variable metric method for minimization.
+\newblock \textit{Argonne National Laboratories Report ANL-5990}, 1959.
+\end{thebibliography}
+
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[2]{FP} R. Fletcher and M. J. D. Powell.
+\newblock    A rapidly convergent descent method for minimization.
+\newblock   \textit{The Computer Journal}, 6 (1963), 163–168.
+\end{thebibliography}
+
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[3]{Po1} M. J. D. Powell.
+\newblock    On the convergence of variable metric algorithm.
+\newblock    \textit{J. Inst. Math. Appl.}, (1971), 7:21.
+\end{thebibliography}
+
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[4]{Po2} M. J. D. Powell.
+\newblock    Some Global convergence properties of a variable metric algorithm for minimization without exact line searches.
+\newblock    \textit{Nonlinear Programming, SIAM-AMS Proceedings vol. IX}, 1976, 53–72.
+\end{thebibliography}
+
+\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+\bibitem[5]{BNY} R. H. Byrd, J. Nocedal and Y. Yuan.
+\newblock    Global convergence of a class of variable metric algorithms.
+\newblock   \textit{SIAM J. Numer. ANal.}, 1987, 24:1171.
+\end{thebibliography}
+}
+
+\end{frame}
+
+\begin{frame}
+
+\frametitle{References}
+\footnotesize{
+
+\begin{thebibliography}{99}
+\bibitem[6]{Yuan} Y. Yuan.
+\newblock    On the convergence of the DFP algorithm.
+\newblock    Technical Report, Computing Center, Academica Sinica, Beijing, China, 1994.
+\end{thebibliography}
+
+\begin{thebibliography}{99}
+\bibitem[7]{YH} H. Yin and J. Han.
+\newblock    Some sufficient conditions for the global convergence of the DFP algorithm.
+\newblock   \textit{Acta Math. Appl. Sin. 21}, No.2, 179-186, 1998.
+\end{thebibliography}
+
+\begin{thebibliography}{99}
+\bibitem[8]{XL} D. Xu and G. Liu.
+\newblock    A new sufficient condition for the convergence of DFP algorithm with Wolfe line search.
+\newblock    \textit{Systems Science and Mathematical Sciences}, 9(1996), 259-269.    
+\end{thebibliography}
+
+\begin{thebibliography}{99}
+\bibitem[9]{LHX} G. Liu, J. Han and D. Xu.
+\newblock    A note on the convergence of the DFP algoithm on quadratic uniformly convex functions.
+\newblock    \textit{Optimization 51}, No.2, 339-352, 2002.    
+\end{thebibliography}
+
+\begin{thebibliography}{99}
+\bibitem[10]{LWH} W. Luo, Z. Wu and S. He.
+\newblock    An Improved Quasi-Newtonian Algorithm
+\newblock    \textit{Journal of Chengdu University of Information Technology}, 2024, 39(03): 374-381. 
+\end{thebibliography}
+}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\Huge{\centerline{Thanks For Listening}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
