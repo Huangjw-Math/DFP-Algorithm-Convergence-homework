@@ -1,3 +1,21 @@
 # DFP-Algorithm-Convergence-homework
 
-My homework on the convergence of the DFP algorithm
+This repository contains my homework on the convergence of the DFP algorithm.
+
+## Features
+
+-All files required to generate the PDF are included.
+
+-PDF is automatically compiled and saved as artifact for each push.
+
+-Spelling is automatically checked for each push.
+
+## How to compile
+
+You can use [latexmk](https://ctan.org/pkg/latexmk) to compile the file locally.
+
+More specifically, run 
+```sh
+latexmk -pdf main.tex
+``` 
+in the repository root.
