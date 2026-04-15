@@ -14,7 +14,7 @@ This repository contains my homework on the convergence of the DFP algorithm.
 
 You can use [latexmk](https://ctan.org/pkg/latexmk) to compile the file locally.
 
-More specifically, run 
+For example, run 
 ```sh
 latexmk -pdf On the DFP Algorithm and Wolfe Line Search.tex.tex
 ``` 
