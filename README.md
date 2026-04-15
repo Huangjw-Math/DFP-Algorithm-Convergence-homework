@@ -16,6 +16,6 @@ You can use [latexmk](https://ctan.org/pkg/latexmk) to compile the file locally.
 
 More specifically, run 
 ```sh
-latexmk -pdf main.tex
+latexmk -pdf On the DFP Algorithm and Wolfe Line Search.tex.tex
 ``` 
 in the repository root.
